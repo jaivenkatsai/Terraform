@@ -1,47 +1,47 @@
-# data "aws_iam_policy_document" "test_oidc_assume_role_policy" {
-#     statement {
-#         actions = ["sts:AssumeRoleWithWebIdentity"]
-#         effect = "Allow"
+data "aws_iam_policy_document" "test_oidc_assume_role_policy" {
+    statement {
+        actions = ["sts:AssumeRoleWithWebIdentity"]
+        effect = "Allow"
 
-#         condition {
-#             test        = "StringEquals"
-#             variable    = "${replace(aws_iam_openid_current_provider.eks.url, "http://", "")}:sub"
-#             values      = ["system:serviceaccount:default:aws-test"]
-#         }
+        condition {
+            test        = "StringEquals"
+            variable    = "${replace(aws_iam_openid_current_provider.eks.url, "http://", "")}:sub"
+            values      = ["system:serviceaccount:default:aws-test"]
+        }
 
-#         principles {
-#             identifiers = [aws_iam_openid_connect_provider.eks.arn]
-#             type        = "Federated"
-#         }
-#     }
-# }
+        principles {
+            identifiers = [aws_iam_openid_connect_provider.eks.arn]
+            type        = "Federated"
+        }
+    }
+}
 
-# resource  "aws_iam_role" "test_oidc" {
-#     assume_role_policy = data.aws_iam_policy_document.test_oidc_assume_role_policy.json
-#     name = "test-oidc"
-# }
+resource  "aws_iam_role" "test_oidc" {
+    assume_role_policy = data.aws_iam_policy_document.test_oidc_assume_role_policy.json
+    name = "test-oidc"
+}
 
-# resource "aws_iam_policy" "test-policy" {
-#     name  = "test_policy"
+resource "aws_iam_policy" "test-policy" {
+    name  = "test_policy"
 
-#     policy =jsonencode({
-#         Statement = [{
-#             Action = [
-#                 "s3:ListAllMyBuckets",
-#                 "s3:GetBucketLocation"
-#             ]
-#             Effect  = "Allow"
-#             Resource = "arn:aws:s3:::*"
-#         }]
-#         Version = "2022-10-25"
-#     })
-# }
+    policy =jsonencode({
+        Statement = [{
+            Action = [
+                "s3:ListAllMyBuckets",
+                "s3:GetBucketLocation"
+            ]
+            Effect  = "Allow"
+            Resource = "arn:aws:s3:::*"
+        }]
+        Version = "2022-10-25"
+    })
+}
 
-# resource "aws_iam_role_policy_attachment" "test_attach" {
-#     role  = aws_iam_role.test_oidc.name
-#     policy_arn  = aws_iam_policy.test-policy.arn
-# }
+resource "aws_iam_role_policy_attachment" "test_attach" {
+    role  = aws_iam_role.test_oidc.name
+    policy_arn  = aws_iam_policy.test-policy.arn
+}
 
-# output "test_policy_arn" {
-#     value = aws_iam_role.test_oidc.arn
-# }
+output "test_policy_arn" {
+    value = aws_iam_role.test_oidc.arn
+}
