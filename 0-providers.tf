@@ -1,13 +1,12 @@
 provider "aws" {
     region = "us-east-1"
-    profile = "terraform"
 }
 
 terraform {
     required_providers {
         aws = {
             source = "hashicrop/aws"
-            version ="~> 3.0"
+            version ="~> 1.3.3"
         }
     }
 }
