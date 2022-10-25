@@ -31,7 +31,7 @@ resource "aws_iam_policy" "test-policy" {
                 "s3:GetBucketLocation"
             ]
             Effect  = "Allow"
-            Resource "arn:aws:s3:::*"
+            Resource = "arn:aws:s3:::*"
         }]
         Version = "2022-10-25"
     })
