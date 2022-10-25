@@ -5,7 +5,7 @@ provider "aws" {
 terraform {
     required_providers {
         aws = {
-            source = "registry.terraform.io/hashicrop/aws"
+            source = "hashicrop/aws"
             version ="~> 3.0"
         }
     }
